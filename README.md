@@ -11,4 +11,5 @@ There are several conditions that can be used for the PSO algorithm in order to 
 - Maximum iteration number: The PSO algorithm stops after a set amount of iterations.
 - Number of iterations without change: The PSO algorithm stops after a set amount of iterations, which didn't change the result.
 - Minimum cost function difference: The PSO algorithm stops after the difference between the last obtained cost and the current best cost is less then a set threshold.
+
 We have choses to use a fixed maximum number of iterations for our implementations.
