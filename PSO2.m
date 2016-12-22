@@ -12,7 +12,7 @@ function PSO2
   
   %% Problem Definition
   % Coordinates of cities (see also: http://www.cc.gatech.edu/~bdilkina/CSE6140-2014fa/ProjectTSP.htm)
-  data = ulysses;
+  data = ulysses16;
   coords = data.coords;
   mode = data.mode;
   nr_coords = length(coords);

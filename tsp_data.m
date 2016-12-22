@@ -20,7 +20,7 @@ burma14.mode = "geo";
 burma14.optimum = 3323;
 
 % 16 Mediterranean cities (Odyssey of Ulysses)
-ulysses.coords = ...
+ulysses16.coords = ...
   [1 38.24 20.42;
   2 39.57 26.15;
   3 40.56 25.32;
@@ -37,8 +37,8 @@ ulysses.coords = ...
   14 37.51 15.17;
   15 35.49 14.32;
   16 39.36 19.56;];
-ulysses.mode = "geo";
-ulysses.optimum = 6859;
+ulysses16.mode = "geo";
+ulysses16.optimum = 6859;
 
 % 52 locations in Berlin (Germany)
 berlin52.coords = ...
