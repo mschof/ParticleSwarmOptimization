@@ -13,7 +13,7 @@ The file PSO1.m contains a basic implementation of the core PSO algorithm. To te
 
 The parameters used can be seen in the Octave file. Our implementation manages to minimize both functions rather fast. In order to test the algorithm with more dimensions, the *nr_variables* variable can be adjusted.
 
-### More complex PSO (Travelling Salesman Problem)
+### More complex PSO with an approximation for the Travelling Salesman Problem (PSO2)
 For our more elevated implementation we decided to solve (or at least approximate) the travelling salesman problem (TSP). Our implementation is based on a modification of the original PSO algorithm, which uses a fuzzy position matrix and probabilities in order to choose a route. More information about the core idea can be found in [1] and [2].
 Our implementation is not always able to find the optimal solution, but it approximates it quite well, given that the PSO algorithm was originally not build to solve TSP, an NP-hard problem.
 We used different datasets to test our implementation, mainly three standard ones:
@@ -21,7 +21,7 @@ We used different datasets to test our implementation, mainly three standard one
 - [ulysses16](http://elib.zib.de/pub/mp-testdata/tsp/tsplib/tsp/ulysses16.tsp)
 - [berlin52](http://elib.zib.de/pub/mp-testdata/tsp/tsplib/tsp/berlin52.tsp)
 
-For ulysses there are more then a trillion possible routes, and yet PSO manages to approximate it very well in just a few seconds.
+For ulysses16 there are more then a trillion possible routes, and yet PSO manages to approximate it very well in just a few seconds.
 
 ## PSO Termination Conditions
 There are several conditions that can be used for the PSO algorithm in order to know when to stop:
