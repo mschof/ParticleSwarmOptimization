@@ -33,6 +33,5 @@ There are several conditions that can be used for the PSO algorithm in order to 
 We have chosen to use a fixed maximum number of iterations for our implementations.
 
 References:
-[1] W. Pang, K.-P. Wang, C.-G. Zhou and L.-J. Dong, "Fuzzy Discrete Particle Swarm Optimization for Solving Traveling Salesman Problem" ([Link](https://ai2-s2-pdfs.s3.amazonaws.com/3a30/480f7ccccecb02dbd951fe217eb64db5cd66.pdf))
-
-[2] R. F. Abdel-Kader, "Fuzzy Particle Swarm Optimization with Simulated Annealing and Neighborhood Information Communication for Solving TSP" ([Link](http://thesai.org/Downloads/Volume2No5/Paper%203-Fuzzy%20Particle%20Swarm%20Optimization%20with%20Simulated%20Annealing%20and%20Neighborhood%20Information%20Communication%20for%20Solving%20TSP.pdf))
+- [1] W. Pang, K.-P. Wang, C.-G. Zhou and L.-J. Dong, "Fuzzy Discrete Particle Swarm Optimization for Solving Traveling Salesman Problem" ([Link](https://ai2-s2-pdfs.s3.amazonaws.com/3a30/480f7ccccecb02dbd951fe217eb64db5cd66.pdf))
+- [2] R. F. Abdel-Kader, "Fuzzy Particle Swarm Optimization with Simulated Annealing and Neighborhood Information Communication for Solving TSP" ([Link](http://thesai.org/Downloads/Volume2No5/Paper%203-Fuzzy%20Particle%20Swarm%20Optimization%20with%20Simulated%20Annealing%20and%20Neighborhood%20Information%20Communication%20for%20Solving%20TSP.pdf))
