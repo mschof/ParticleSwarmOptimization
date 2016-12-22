@@ -22,7 +22,7 @@ We used different datasets to test our implementation, mainly three standard one
 - [ulysses16](http://elib.zib.de/pub/mp-testdata/tsp/tsplib/tsp/ulysses16.tsp)
 - [berlin52](http://elib.zib.de/pub/mp-testdata/tsp/tsplib/tsp/berlin52.tsp)
 
-We assumed the Hayford ellipsoid for all geographic problems.
+We assumed the [Hayford ellipsoid](https://en.wikipedia.org/wiki/Hayford_ellipsoid) for all geographic problems.
 For *ulysses16* there are more then a trillion possible routes, and yet PSO manages to approximate it quite good in just a few seconds.
 
 ## PSO Termination Conditions
