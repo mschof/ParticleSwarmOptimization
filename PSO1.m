@@ -23,7 +23,7 @@ function PSO1
   %% Init
   template_particle.position = [];
   template_particle.velocity = [];
-  template_particle.cost = [];
+  template_particle.cost = 0;
   template_particle.best.position = [];   % Local best
   template_particle.best.cost = inf;       % Local best
   
@@ -107,8 +107,10 @@ function PSO1
     
   endfor
   
+  %% Print results
+  ["Best cost: " num2str(global_best.cost)]
   
-  %% Print Results
+  %% Plot results
   figure;
   plot(best_costs, "LineWidth", 2);
   xlabel("iteration");
