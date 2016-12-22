@@ -15,6 +15,7 @@ The parameters used can be seen in the Octave file. Our implementation manages t
 
 ### More complex PSO with an approximation for the Travelling Salesman Problem (PSO2)
 For our more elevated implementation we decided to solve (or at least approximate) the travelling salesman problem (TSP). Our implementation is based on a modification of the original PSO algorithm, which uses a fuzzy position matrix and probabilities in order to choose a route. More information about the core idea can be found in [1] and [2].
+
 Our implementation is not always able to find the optimal solution, but it approximates it quite well, given that the PSO algorithm was originally not build to solve TSP, an NP-hard problem.
 We used different datasets to test our implementation, mainly three standard ones:
 - [burma14](http://elib.zib.de/pub/mp-testdata/tsp/tsplib/tsp/burma14.tsp)
@@ -30,8 +31,6 @@ There are several conditions that can be used for the PSO algorithm in order to 
 - Minimum cost function difference: The PSO algorithm stops after the difference between the last obtained cost and the current best cost is less then a set threshold.
 
 We have chosen to use a fixed maximum number of iterations for our implementations.
-
-
 
 References:
 [1] W. Pang, K.-P. Wang, C.-G. Zhou and L.-J. Dong, "Fuzzy Discrete Particle Swarm Optimization for Solving Traveling Salesman Problem" ([Link](https://ai2-s2-pdfs.s3.amazonaws.com/3a30/480f7ccccecb02dbd951fe217eb64db5cd66.pdf))
