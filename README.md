@@ -8,8 +8,8 @@ In order to show the effectiveness of PSO, we decided to create two different sc
 
 ### Simple maximization/minimization (PSO1)
 The file PSO1.m contains a basic implementation of the core PSO algorithm. To test it, we decided to minimize two different functions:
-* the [Sphere function](https://www.sfu.ca/~ssurjano/spheref.html)
-* the [Rastrigin Function](https://www.sfu.ca/~ssurjano/rastr.html)
+* [Sphere function](https://www.sfu.ca/~ssurjano/spheref.html)
+* [Rastrigin Function](https://www.sfu.ca/~ssurjano/rastr.html)
 
 The parameters used can be seen in the Octave file. Our implementation manages to minimize both functions rather fast. In order to test the algorithm with more dimensions, the *nr_variables* variable can be adjusted.
 
@@ -21,7 +21,7 @@ We used different datasets to test our implementation, mainly three standard one
 - [ulysses16](http://elib.zib.de/pub/mp-testdata/tsp/tsplib/tsp/ulysses16.tsp)
 - [berlin52](http://elib.zib.de/pub/mp-testdata/tsp/tsplib/tsp/berlin52.tsp)
 
-For ulysses16 there are more then a trillion possible routes, and yet PSO manages to approximate it very well in just a few seconds.
+For *ulysses16* there are more then a trillion possible routes, and yet PSO manages to approximate it quite good in just a few seconds.
 
 ## PSO Termination Conditions
 There are several conditions that can be used for the PSO algorithm in order to know when to stop:
@@ -30,3 +30,9 @@ There are several conditions that can be used for the PSO algorithm in order to 
 - Minimum cost function difference: The PSO algorithm stops after the difference between the last obtained cost and the current best cost is less then a set threshold.
 
 We have chosen to use a fixed maximum number of iterations for our implementations.
+
+
+
+References:
+[1] W. Pang, K.-P. Wang, C.-G. Zhou and L.-J. Dong, "Fuzzy Discrete Particle Swarm Optimization for Solving Traveling Salesman Problem" ([Link](https://ai2-s2-pdfs.s3.amazonaws.com/3a30/480f7ccccecb02dbd951fe217eb64db5cd66.pdf))
+[2] R. F. Abdel-Kader, "Fuzzy Particle Swarm Optimization with Simulated Annealing and Neighborhood Information Communication for Solving TSP" ([Link](http://thesai.org/Downloads/Volume2No5/Paper%203-Fuzzy%20Particle%20Swarm%20Optimization%20with%20Simulated%20Annealing%20and%20Neighborhood%20Information%20Communication%20for%20Solving%20TSP.pdf))
