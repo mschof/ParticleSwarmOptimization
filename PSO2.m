@@ -42,12 +42,22 @@ function PSO2
   cf = @TSPCost;
   
   %% Parameter Adjustment (adjust them for better performance!)
-  max_iterations = 100;                     % Maximum iterations in PSO algorithm (use 1000 later)
+  max_iterations = 500;                     % Maximum iterations in PSO algorithm (use 1000 later)
   swarm_size = 50;                        % Swarm size (number of particles)
-  w = 1;                                  % Inertia coefficient
-  w_damp = 0.99;                          % damping of inertia coefficient, lower = faster damping
-  c1 = 1.5;                                 % Cognitive acceleration coefficient (here: 0 >= c1 <= 2)
-  c2 = 1.5;                                 % Social acceleration coefficient (here: 0 >= c2 <= 2)
+  w_high = 1.0;
+  w_low = 0.2;
+  w = w_high;                             % Inertia coefficient, TODO: find the best value here!
+  w_damp = 1.0;                          % damping of inertia coefficient, lower = faster damping, TODO: find the best value here!
+  c1 = 2;                                 % Cognitive acceleration coefficient (here: 0 >= c1 <= 2)
+  c2 = 2;                                 % Social acceleration coefficient (here: 0 >= c2 <= 2)
+  
+  % Simulated Annealing Params
+  T_init = 1000;
+  T_end = 1;
+  T_rate = 0.99;
+  T_cur = T_init;
+  SA_m = 0;
+  SA_gen = 30;
   
   %% Init
   template_particle.position = zeros(nr_coords);
@@ -61,6 +71,14 @@ function PSO2
   
   % Initialize global best (current worst value, inf for minimization, -inf for maximization)
   global_best.cost = inf;
+  ultimate_best.cost = inf;
+  
+%  % random search
+%  cost_t = cf(coords, calcroute(initposition(nr_coords)), mode);
+%  while (cost_t > 8000)
+%    cost_t = cf(coords, calcroute(initposition(nr_coords)), mode);
+%  endwhile
+%  return;
   
   for i=1:swarm_size
     
@@ -87,12 +105,11 @@ function PSO2
   
   % Best cost at each iteration
   best_costs = zeros(max_iterations, 1);
-    
   
   %% PSO Loop
-  
   for iteration=1:max_iterations
-    
+    global_best_new.position = global_best.position;
+    global_best_new.cost = global_best.cost;
     for i=1:swarm_size
       
       % Initialize two random vectors
@@ -103,6 +120,12 @@ function PSO2
       particles(i).velocity = (w * particles(i).velocity) ...
         + (c1 * r1 .* (particles(i).best.position - particles(i).position)) ...
         + (c2 * r2 .* (global_best.position - particles(i).position));
+      
+%      % should all be 0...
+%      round(sum((w * particles(i).velocity)(1, :)))
+%      round(sum((particles(i).best.position - particles(i).position)(1, :)))
+%      round(sum((global_best.position - particles(i).position)(1, :)))
+%      round(sum(particles(i).velocity(1, :)))
       
       % Update position
       particles(i).position = particles(i).position + particles(i).velocity;
@@ -118,32 +141,64 @@ function PSO2
         particles(i).best.position = particles(i).position;
         particles(i).best.cost = particles(i).cost;
         
-        % Update global best
+        % Update new global best
         if (particles(i).best.cost < global_best.cost)
-          global_best.position = particles(i).best.position;
-          global_best.cost = particles(i).best.cost;
+          global_best_new.position = particles(i).best.position;
+          global_best_new.cost = particles(i).best.cost;
         endif
         
       endif
       
     endfor
     
+    % Update global best
+    if (global_best_new.cost < global_best.cost)
+      global_best.position = global_best_new.position;
+      global_best.cost = global_best_new.cost;
+    else
+      % No improvement...
+      SA_m = SA_m + 1;
+    endif
+    
+    % Update ultimate best
+    if (global_best.cost < ultimate_best.cost)
+      ultimate_best.position = global_best.position;
+      ultimate_best.cost = global_best.cost;
+    endif
+    
     % Get best value
     best_costs(iteration) = global_best.cost;
+    
+    % Simulated Annealing
+    if (SA_m == SA_gen)
+      % Annealing...
+      while (T_cur > T_end)
+        neighbour_solution = createneighbour(global_best.position);
+        neighbour_cost = cf(coords, calcroute(neighbour_solution), mode);
+        difference = neighbour_cost - global_best.cost;
+        if (min(1, exp(-difference / T_cur)) > rand())
+          global_best.position = neighbour_solution;
+          global_best.cost = neighbour_cost;
+        endif
+        T_cur = T_cur * T_rate;
+      endwhile
+      SA_m = 0;
+    endif
     
     % Display information for this iteration
     % disp(["Iteration " num2str(iteration) ": best cost = " num2str(best_costs(iteration))]);
     
     % Damp w
     w = w * w_damp;
+    %w = w - ((w_high - w_low) / max_iterations);
     
   endfor
   
   %% Print results
-  bestroute = calcroute(global_best.position);
-  ["Best cost: " num2str(global_best.cost)]
+  bestroute = calcroute(ultimate_best.position);
+  ["Best cost: " num2str(ultimate_best.cost)]
   ["Route: " num2str(bestroute)]
-  ["Error: " num2str((((global_best.cost / data.optimum) - 1) * 100)) "%"]
+  ["Error: " num2str((((ultimate_best.cost / data.optimum) - 1) * 100)) "%"]
   plotroute(coords, bestroute);
   
   %% Plot results
@@ -163,7 +218,7 @@ function ret = initposition(nr_coords)
     row_rand = rand(1, nr_coords - 1); % diagonal should be very small (-inf), so a city can't lead to itself in the next step, therefore (nr_coords - 1) random values
     row_rand = row_rand / sum(row_rand); % normalize so that sum = 1
     pos(i, 1:(i - 1)) = row_rand(1:(i - 1));
-    pos(i, i) = -10;
+    pos(i, i) = 0; % TODO: 0 instead of -inf?
     pos(i, (i + 1):nr_coords) = row_rand(i:(nr_coords - 1));
     
   endfor
@@ -174,8 +229,43 @@ endfunction
 
 function ret = initvelocity(nr_coords)
   
-  pos = zeros(nr_coords); % is this enough? apparently...
+  pos = zeros(nr_coords); % is this alone maybe also enough?
+  
+  for i=1:nr_coords
+    
+    for j=1:(nr_coords / 2)
+      
+      r1 = rand();
+      r2 = r1 * -1.0;
+      pos(i, j) = r1;
+      pos(i, nr_coords - (j - 1)) = r2;
+      
+    endfor
+    
+    % Make center value 0 if nr_coords is odd
+    if (mod(nr_coords, 2) == 0)
+      pos(i, (nr_coords / 2) + 1) = 0;
+    endif
+    
+    % Shuffle
+    pos(i, :) = pos(i, :)(randperm(nr_coords));
+    
+  endfor
+  
   ret = pos;
+  
+endfunction
+
+function ret = createneighbour(probabilities)
+  
+  neighbour_solution = probabilities;
+  r_index_1 = randi([1, length(probabilities)]);
+  r_index_2 = randi([1, length(probabilities)]);
+  while (r_index_1 == r_index_2)
+    r_index_2 = randi([1, length(probabilities)]);
+  endwhile
+  neighbour_solution([r_index_1, r_index_2], :) = neighbour_solution([r_index_2, r_index_1], :);
+  ret = neighbour_solution;
   
 endfunction
 
